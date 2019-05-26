@@ -7,7 +7,7 @@
 See how to implement spring-retry in [TestRetryService](src/main/groovy/com/huantt/springretry/service/TestRetryService.groovy)
 
 ```Groovy
- @Retryable(
+    @Retryable(
             value = [Exception.class],
             maxAttempts = 3,
             backoff = @Backoff(1000L))
