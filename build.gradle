@@ -1,9 +1,10 @@
 plugins {
     id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id 'groovy'
 }
 
 apply plugin: 'io.spring.dependency-management'
-
+apply plugin: 'groovy'
 group = 'com.huantt'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
