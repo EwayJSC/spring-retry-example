@@ -6,6 +6,16 @@
 # Implementation
 See how to implement spring-retry in [TestRetryService](src/main/groovy/com/huantt/springretry/service/TestRetryService.groovy)
 
+### EnableRetry in your AppConfig
+```Groovy
+@Configuration
+@EnableRetry
+class AppConfig {
+
+}
+
+```
+### An example how to declare and define retrying rule
 ```Groovy
     @Retryable(
             value = [Exception.class],
