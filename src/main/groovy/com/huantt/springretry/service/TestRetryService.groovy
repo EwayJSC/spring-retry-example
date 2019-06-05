@@ -22,7 +22,7 @@ class TestRetryService {
             value = [Exception.class],
             maxAttempts = 3,
             backoff = @Backoff(1000L))
-    public void doSomethingWithCare(String variable) {
+    public String doSomethingWithCare(String variable) {
         switch (counter) {
             case 0:
                 log.info("#${counter++}")
@@ -39,13 +39,14 @@ class TestRetryService {
     }
 
     @Recover
-    public void recover(Exception exception, String variable) {
+    public String recover(Exception exception, String variable) {
         log.error("Failed to retry\nException: ${exception.class.name}\nVariable: $variable")
     }
 
     @Recover
-    public void recover(NullPointerException exception, String variable) {
+    public String recover(NullPointerException exception, String variable) {
         log.error("Failed to retry\nNullPointerException: ${exception.class.name}\nVariable: $variable")
+        return "This value is returned by recover(NullPointerException exception, String variable) method"
     }
 
 }

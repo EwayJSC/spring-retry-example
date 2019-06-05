@@ -21,7 +21,7 @@ class AppConfig {
             value = [Exception.class],
             maxAttempts = 3,
             backoff = @Backoff(1000L))
-    public void doSomethingWithCare(String variable) {
+    public String doSomethingWithCare(String variable) {
         switch (counter) {
             case 0:
                 log.info("#${counter++}")
@@ -38,8 +38,10 @@ class AppConfig {
     }
     
     @Recover
-    public void recover(Exception exception, String variable) {
+    public String recover(Exception exception, String variable) {
         log.error("Failed to retry\nException: ${exception.class.name}\nVariable: $variable")
     }
 ```
 
+### Note
+- Recover metohd must be had the return type is the same with the return type of the retried method because recover method can return a recovering value when can not retry successfully.

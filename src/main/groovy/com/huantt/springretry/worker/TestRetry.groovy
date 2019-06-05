@@ -2,6 +2,7 @@ package com.huantt.springretry.worker
 
 import com.huantt.springretry.service.TestRetryService
 import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component
  */
 @CompileStatic
 @Component
+@Slf4j
 class TestRetry {
 
     @Autowired
@@ -18,6 +20,7 @@ class TestRetry {
 
     @Scheduled(fixedRate = 9999999999)
     void run() {
-        service.doSomethingWithCare("Passed variable")
+        String result = service.doSomethingWithCare("Passed variable")
+        log.info("@Reult: ${result}")
     }
 }
