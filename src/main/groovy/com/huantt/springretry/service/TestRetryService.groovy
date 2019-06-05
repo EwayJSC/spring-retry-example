@@ -43,4 +43,9 @@ class TestRetryService {
         log.error("Failed to retry\nException: ${exception.class.name}\nVariable: $variable")
     }
 
+    @Recover
+    public void recover(NullPointerException exception, String variable) {
+        log.error("Failed to retry\nNullPointerException: ${exception.class.name}\nVariable: $variable")
+    }
+
 }
