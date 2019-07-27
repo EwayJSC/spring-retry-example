@@ -13,7 +13,49 @@ See how to implement spring-retry in [TestRetryService](src/main/groovy/com/huan
 class AppConfig {
 
 }
+```
 
+### Override RetryListenerSupport to log WARN each time retrying
+Create custom RetryListener
+```Groovy
+class MyRetryListener extends RetryListenerSupport {
+    @Override
+    public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback, Throwable throwable) {
+        log.warn("Failsafe retrying... \nMethod: {} \nException: {}\nRetrying times: {}",
+                context.getAttribute("context.name"),
+                throwable.toString(),
+                context.getRetryCount(),
+                throwable)
+        super.onError(context, callback, throwable)
+    }
+}
+
+```
+
+Create RetryListeners bean:
+```Groovy
+@Bean
+public List<RetryListener> retryListeners() {
+    return Collections.singletonList(new MyRetryListener())
+}
+```
+
+#### Another way:
+```Groovy
+ @Bean
+    public List<RetryListener> retryListeners() {
+        return Collections.singletonList(new RetryListenerSupport(){
+            @Override
+            public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback, Throwable throwable) {
+                log.warn("Failsafe retrying... \nMethod: {} \nException: {}\nRetrying times: {}",
+                        context.getAttribute("context.name"),
+                        throwable.toString(),
+                        context.getRetryCount(),
+                        throwable)
+                super.onError(context, callback, throwable)
+            }
+        })
+    }
 ```
 ### An example how to declare and define retrying rule
 ```Groovy
@@ -44,4 +86,4 @@ class AppConfig {
 ```
 
 ### Note
-- Recover metohd must be had the return type is the same with the return type of the retried method because recover method can return a recovering value when can not retry successfully.
+- Recover method must be had the return type is the same with the return type of the retried method because recover method can return a recovering value when can not retry successfully.
